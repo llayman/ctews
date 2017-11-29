@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import tweepy
+import traceback
 import json
 import MySQLdb 
 from pymongo import MongoClient
@@ -11,10 +12,11 @@ from ConfigParser import SafeConfigParser
 import os
 
 
-WORDS = ['#bigdata', '#AI', '#datascience', '#machinelearning', '#ml', '#iot']
-
 conf = SafeConfigParser()
 conf.read('config.conf')
+
+#conf file contains a comma-delimited list of words, which will be parsed into a list
+WORDS = conf.get('filters','white_list').split(',')
 
 CONSUMER_KEY = conf.get('twitter', 'consumer_key')
 CONSUMER_SECRET = conf.get('twitter', 'consumer_secret')
@@ -85,7 +87,7 @@ class StreamListener(tweepy.StreamListener):
                 print(self.count, "tweets collected.")
 
         except Exception as e:
-           print(e)
+            print(e)
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
