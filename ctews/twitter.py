@@ -32,7 +32,7 @@ class StreamListener(tweepy.StreamListener):
             self.mongodb.insert_tweet(datajson)
 
             self.count += 1
-            if self.count % 10 == 0:
+            if self.count % 500 == 0:
                 print(self.count, "tweets collected.")
 
         except Exception as e:
