@@ -1,5 +1,14 @@
 from configparser import ConfigParser
+import yaml
+import logging.config
 from ctews import db, twitter
+
+
+with open('logging.yaml') as f:
+    logging.config.dictConfig(yaml.load(f))
+
+log = logging.getLogger(__name__)
+
 
 conf = ConfigParser()
 conf.read('config.conf')
@@ -29,8 +38,8 @@ mysql = db.MySqlWrapper(HOST, USER, PASSWD, DATABASE)
 # mongo.truncate()
 # mysql.truncate()
 
-print("Tweets in MongoDB:", mongo.count_tweets())
-print("Tweets in MySQL:", mysql.count_tweets())
+log.info("Tweets in MongoDB: %d", mongo.count_tweets())
+log.info("Tweets in MySQL: %d", mysql.count_tweets())
 
 twitter = twitter.TwitterStreamer(mysql=mysql, mongodb=mongo)
 twitter.stream(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, WORDS)

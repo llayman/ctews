@@ -2,6 +2,9 @@
 
 import tweepy
 import json
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class StreamListener(tweepy.StreamListener):    
@@ -16,10 +19,10 @@ class StreamListener(tweepy.StreamListener):
         self.count = mongodb.count_tweets()
 
     def on_connect(self):
-        print("You are now connected to the streaming API.")
+        log.info("You are now connected to the streaming API.")
 
     def on_error(self, status_code):
-        print('An Error has occured: ' + repr(status_code))
+        log.error('An Error has occured: ' + repr(status_code))
         return False
 
     def on_data(self, data):
@@ -32,11 +35,11 @@ class StreamListener(tweepy.StreamListener):
             self.mongodb.insert_tweet(datajson)
 
             self.count += 1
-            if self.count % 500 == 0:
-                print(self.count, "tweets collected.")
+            if self.count % 1000 == 0:
+                log.info("Tweets collected: %d", self.count)
 
         except Exception as e:
-            print(e)
+            log.error(e)
 
     def cancel(self):
         self.isCanceled = True
@@ -58,7 +61,7 @@ class TwitterStreamer(tweepy.StreamListener):
         self.listener = StreamListener(api=tweepy.API(wait_on_rate_limit=True), mongodb=self.mongodb, mysql=self.mysql)
         streamer = tweepy.Stream(auth=auth, listener=self.listener)
 
-        print("Tracking: " + str(words))
+        log.info("Tracking: " + str(words))
         streamer.filter(track=words)
 
     def disconnect(self):
