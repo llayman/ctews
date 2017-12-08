@@ -31,12 +31,15 @@ class StreamListener(tweepy.StreamListener):
 
         try:
             datajson = json.loads(data)
-            self.mysql.insert_tweet(datajson)
-            self.mongodb.insert_tweet(datajson)
+            if 'text' not in datajson:
+                log.warning(datajson)
+            else:
+                self.mysql.insert_tweet(datajson)
+                self.mongodb.insert_tweet(datajson)
 
-            self.count += 1
-            if self.count % 1000 == 0:
-                log.info("Tweets collected: %d", self.count)
+                self.count += 1
+                if self.count % 1000 == 0:
+                    log.info("Tweets collected: %d", self.count)
 
         except Exception as e:
             log.error(e)

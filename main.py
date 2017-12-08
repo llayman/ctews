@@ -35,8 +35,8 @@ MONGO_COLLECTION = conf.get('mongo', 'collection')
 mongo = db.MongoWrapper(MONGO_HOST, MONGO_USER, MONGO_PASSWD, MONGO_DATABASE, MONGO_COLLECTION)
 mysql = db.MySqlWrapper(HOST, USER, PASSWD, DATABASE)
 
-# mongo.truncate()
-# mysql.truncate()
+#mongo.truncate()
+#mysql.truncate()
 
 log.info("Tweets in MongoDB: %d", mongo.count_tweets())
 log.info("Tweets in MySQL: %d", mysql.count_tweets())
