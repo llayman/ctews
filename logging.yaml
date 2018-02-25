@@ -1,0 +1,24 @@
+version: 1
+disable_existing_loggers: False
+formatters:
+    local:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    utc:
+        (): UTCFormatter.UTCFormatter
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+handlers:
+    console:
+        class: logging.StreamHandler
+        formatter: utc
+        stream: ext://sys.stdout
+
+    rotatingFile:
+        class: logging.handlers.TimedRotatingFileHandler
+        formatter: utc
+        filename: log/ctews.log
+        when: midnight
+        utc: True
+
+root:
+    level: INFO
+    handlers: [console, rotatingFile]
