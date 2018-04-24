@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Cyber Threat Early Warning System</h1>
+        <p class="lead">Detecting Cyber Threats Quick</p>
+    </div>
+
+    <h4> Streaming Service </h4>
+    <p id="status">Loading ... </p>
+    <p>CTEWS Error Log:</p>
+    <textarea readonly class="form-control" rows="20" id="log" style="max-width:100%;"></textarea>
+    <button id="toggleState" disabled>Toggle</button>
+    <script type=text/javascript src="{{url_for('static', filename='main.js') }}"></script>
+{% endblock %}
