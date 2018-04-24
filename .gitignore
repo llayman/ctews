@@ -3,3 +3,7 @@ config.conf
 /log
 /.idea
 /.vscode
+tweetData.csv
+csvGen.py.save
+collector.pyc
+app.pyc
